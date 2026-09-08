@@ -1,0 +1,102 @@
+import React from 'react';
+import { ContractItem, User } from '../types';
+import { CheckSquare, Building, Calendar, Eye, ShieldCheck, CheckCircle2 } from 'lucide-react';
+
+interface SupervisorQueueProps {
+  contracts: ContractItem[];
+  currentUser: User;
+  onSelectContract: (contract: ContractItem) => void;
+}
+
+export const SupervisorQueue: React.FC<SupervisorQueueProps> = ({
+  contracts,
+  currentUser,
+  onSelectContract,
+}) => {
+  const supervisorList = contracts.filter(
+    (c) => c.status === 'PENDING_SUPERVISOR_APPROVAL' || c.legalReview.status === 'PENDING_SUPERVISOR_APPROVAL'
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-lg border border-zinc-200 shadow-sm flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold text-zinc-900 flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-zinc-800" />
+            <span>법무담당 최종 승인 대기함</span>
+          </h2>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            법무관리자가 검토 완료 후 최종 승인을 요청한 계약 건들을 확인하고 최종 승인을 처리합니다.
+          </p>
+        </div>
+        <div className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded font-medium">
+          승인 대기 총 <span className="font-bold">{supervisorList.length}</span>건
+        </div>
+      </div>
+
+      {supervisorList.length === 0 ? (
+        <div className="bg-white rounded-lg border border-zinc-200 p-12 text-center">
+          <CheckCircle2 className="w-12 h-12 text-emerald-300 mx-auto mb-3" />
+          <h3 className="text-sm font-medium text-zinc-900 mb-1">최종 승인 대기 중인 계약 건이 없습니다</h3>
+          <p className="text-xs text-zinc-500">법무관리자의 승인 요청 건이 이곳에 표시됩니다.</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg border border-zinc-200 overflow-hidden shadow-sm">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-200 text-xs font-semibold text-zinc-600 uppercase tracking-wider">
+                <th className="py-3 px-4">계약서명</th>
+                <th className="py-3 px-4">요청 부서</th>
+                <th className="py-3 px-4">계약상대방</th>
+                <th className="py-3 px-4">법무관리자 검토자</th>
+                <th className="py-3 px-4">승인 대기일</th>
+                <th className="py-3 px-4 text-right">최종 승인 및 확인</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200 text-sm">
+              {supervisorList.map((contract) => (
+                <tr
+                  key={contract.id}
+                  className="hover:bg-zinc-50 transition-colors cursor-pointer"
+                  onClick={() => onSelectContract(contract)}
+                >
+                  <td className="py-3.5 px-4">
+                    <div className="font-medium text-zinc-900">{contract.title}</div>
+                    <div className="text-xs text-zinc-500">{contract.category}</div>
+                  </td>
+                  <td className="py-3.5 px-4 text-xs font-medium text-zinc-900">
+                    {contract.team}
+                  </td>
+                  <td className="py-3.5 px-4 text-xs font-medium text-zinc-800">
+                    <div className="flex items-center space-x-1">
+                      <Building className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>{contract.counterpart}</span>
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4 text-xs text-zinc-600">
+                    {contract.legalReview.reviewerName || '최법무 (법무관리자)'}
+                  </td>
+                  <td className="py-3.5 px-4 text-xs text-zinc-600">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="w-3 h-3 text-zinc-400" />
+                      <span>{contract.updatedAt}</span>
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => onSelectContract(contract)}
+                      className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded text-xs font-medium inline-flex items-center gap-1 transition-colors"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>최종 승인 및 내용 확인</span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
