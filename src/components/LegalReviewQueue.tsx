@@ -13,11 +13,26 @@ export const LegalReviewQueue: React.FC<LegalReviewQueueProps> = ({
   currentUser,
   onSelectContract,
 }) => {
-  // Filter contracts that have legal review requested or in review, or if legal manager, show all requests
-  let reviewList = contracts.filter((c) => c.status === 'REVIEW_REQUESTED' || c.status === 'IN_REVIEW' || c.legalReview.requestedAt);
-
-  if (currentUser.role === 'team_member') {
-    reviewList = reviewList.filter((c) => c.team === currentUser.team);
+  // Filter contracts according to role:
+  // For legal manager/supervisor: show only pending/unapproved review requests
+  // For team member: show approved contracts for their team
+  let reviewList = contracts;
+  if (currentUser.role === 'legal_manager' || currentUser.role === 'legal_supervisor') {
+    reviewList = contracts.filter((c) => {
+      const isNotApproved = c.status !== 'REVIEW_COMPLETED' && c.status !== 'SIGNED' && c.legalReview.status !== 'APPROVED';
+      const isPendingReview = 
+        c.status === 'REVIEW_REQUESTED' || 
+        c.status === 'IN_REVIEW' || 
+        c.legalReview.status === 'PENDING' || 
+        c.legalReview.status === 'IN_REVIEW' || 
+        c.legalReview.status === 'REVISION_NEEDED';
+      return isNotApproved && isPendingReview;
+    });
+  } else {
+    reviewList = contracts.filter((c) => {
+      const isApproved = c.status === 'REVIEW_COMPLETED' || c.status === 'SIGNED' || c.legalReview.status === 'APPROVED';
+      return c.team === currentUser.team && isApproved;
+    });
   }
 
   return (

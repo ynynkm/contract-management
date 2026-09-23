@@ -13,10 +13,26 @@ import { CategoryManager } from './components/CategoryManager';
 import { ContractDetailModal } from './components/ContractDetailModal';
 import { ContractCompareModal } from './components/ContractCompareModal';
 import { ContractFormModal } from './components/ContractFormModal';
+import { LoginPage } from './components/LoginPage';
 
 export default function App() {
   const [contracts, setContracts] = useState<ContractItem[]>(INITIAL_CONTRACTS);
-  const [currentUser, setCurrentUser] = useState<User>(MOCK_USERS[0]); // Default: 김영업 (영업1팀)
+  
+  // Real login state with localStorage persistence
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    try {
+      const savedUserId = localStorage.getItem('clms_user_id');
+      if (savedUserId) {
+        const found = MOCK_USERS.find((u) => u.id === savedUserId);
+        if (found) return found;
+      }
+    } catch {
+      // ignore storage error
+    }
+    // Default to finance team member to show departmental segregation immediately
+    return MOCK_USERS[2]; // 이재무 (재무팀)
+  });
+
   const [activeTab, setActiveTab] = useState<string>('list'); // 'list' | 'legal_queue' | 'supervisor_queue' | 'approval_requested_queue' | 'approved_queue' | 'signed_queue' | 'categories'
   const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -24,6 +40,42 @@ export default function App() {
   const [selectedContract, setSelectedContract] = useState<ContractItem | null>(null);
   const [compareContract, setCompareContract] = useState<ContractItem | null>(null);
   const [isNewModalOpen, setIsNewModalOpen] = useState<boolean>(false);
+
+  // Login handler
+  const handleLogin = (user: User) => {
+    try {
+      localStorage.setItem('clms_user_id', user.id);
+    } catch {
+      // ignore
+    }
+    setCurrentUser(user);
+    setActiveTab('list');
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('clms_user_id');
+    } catch {
+      // ignore
+    }
+    setCurrentUser(null);
+  };
+
+  // User switch handler
+  const handleSwitchUser = (user: User) => {
+    try {
+      localStorage.setItem('clms_user_id', user.id);
+    } catch {
+      // ignore
+    }
+    setCurrentUser(user);
+  };
+
+  // If not logged in, render real LoginPage
+  if (!currentUser) {
+    return <LoginPage users={MOCK_USERS} onLogin={handleLogin} />;
+  }
 
   // Update contract handler
   const handleUpdateContract = (updated: ContractItem) => {
@@ -36,9 +88,9 @@ export default function App() {
     setContracts((prev) => [newContract, ...prev]);
   };
 
-  // Filter accessible contracts for counts
+  // Filter accessible contracts based on department and role (RBAC)
   const accessibleContracts = contracts.filter((c) => {
-    if (currentUser.role === 'team_member') {
+    if (currentUser.role === 'team_member' || currentUser.role === 'team_leader') {
       return c.team === currentUser.team;
     }
     return true;
@@ -69,10 +121,11 @@ export default function App() {
       {/* Top Header */}
       <Header
         currentUser={currentUser}
-        onSwitchUser={setCurrentUser}
+        onSwitchUser={handleSwitchUser}
         users={MOCK_USERS}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
+        onLogout={handleLogout}
         pendingCount={
           currentUser.role === 'legal_supervisor'
             ? supervisorApprovalCount

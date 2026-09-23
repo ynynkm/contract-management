@@ -223,9 +223,11 @@ export const INITIAL_CONTRACTS: ContractItem[] = [
 ];
 
 export const MOCK_USERS: User[] = [
-  { id: 'usr-1', name: '김영업', team: '영업1팀', role: 'team_member' },
-  { id: 'usr-2', name: '박인사', team: '인사팀', role: 'team_member' },
-  { id: 'usr-3', name: '이재무', team: '재무팀', role: 'team_member' },
-  { id: 'usr-4', name: '최법무', team: '법무담당', role: 'legal_manager' },
-  { id: 'usr-5', name: '한법무담당', team: '법무담당', role: 'legal_supervisor' },
+  { id: 'usr-1', email: 'sales@company.com', name: '김영업', team: '영업1팀', role: 'team_member', position: '팀원' },
+  { id: 'usr-1-lead', email: 'sales.lead@company.com', name: '정영업팀장', team: '영업1팀', role: 'team_leader', position: '팀장' },
+  { id: 'usr-3', email: 'finance@company.com', name: '이재무', team: '재무팀', role: 'team_member', position: '팀원' },
+  { id: 'usr-3-lead', email: 'finance.lead@company.com', name: '박재무팀장', team: '재무팀', role: 'team_leader', position: '팀장' },
+  { id: 'usr-2', email: 'hr@company.com', name: '박인사', team: '인사팀', role: 'team_member', position: '팀원' },
+  { id: 'usr-4', email: 'legal.mgr@company.com', name: '최법무', team: '법무담당', role: 'legal_manager', position: '법무관리자' },
+  { id: 'usr-5', email: 'legal.head@company.com', name: '한법무담당', team: '법무담당', role: 'legal_supervisor', position: '법무담당' },
 ];

@@ -30,7 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="w-64 bg-white border-r border-zinc-200 flex flex-col shrink-0 min-h-[calc(100vh-4rem)] p-4 space-y-6">
       {/* New Contract Button */}
-      {currentUser.role === 'team_member' && (
+      {(currentUser.role === 'team_member' || currentUser.role === 'team_leader') && (
         <button
           onClick={onOpenNewModal}
           className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm py-2.5 px-4 rounded-md flex items-center justify-center space-x-2 transition-colors shadow-sm"
@@ -58,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center space-x-2.5">
             <FileText className="w-4 h-4 text-zinc-500" />
             <span>
-              {currentUser.role === 'team_member' ? `${currentUser.team} 계약서` : '전체 계약서'}
+              {currentUser.role === 'team_member' || currentUser.role === 'team_leader' ? `${currentUser.team} 계약서` : '전체 계약서'}
             </span>
           </div>
           <span className="text-xs bg-zinc-200 text-zinc-700 px-2 py-0.5 rounded-full">
@@ -80,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span>법무 검토 요청함</span>
           </div>
           <div className="flex items-center gap-1">
-            {currentUser.role === 'team_member' && approvedCount > 0 && (
+            {(currentUser.role === 'team_member' || currentUser.role === 'team_leader') && approvedCount > 0 && (
               <span className="text-xs bg-emerald-100 text-emerald-800 font-medium px-2 py-0.5 rounded-full">
                 {approvedCount}
               </span>
@@ -200,10 +200,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="font-semibold text-zinc-700">권한 안내</div>
         <p>
           {currentUser.role === 'legal_manager'
-            ? '법무관리자: 법무 검토 회신, 승인 요청함 및 체결 완료함 관리'
+            ? '법무관리자: 전사 검토 접수, 조항 수정/파일 첨부 및 승인 요청'
             : currentUser.role === 'legal_supervisor'
-            ? '법무담당: 최종 승인 완료함 및 체결 완료함 관리'
-            : `${currentUser.team} 소속 계정: 부서장 승인 후 법무 검토 요청 및 체결 완료함 관리`}
+            ? '법무담당: 전사 계약서 최종 승인 결재 및 체결 완료함 관리'
+            : currentUser.role === 'team_leader'
+            ? `${currentUser.team} 소속 전체 계약서 총괄, 부서 내부 승인 및 관리`
+            : `${currentUser.team} 소속 계정: 계약서 작성, 법무 검토 요청 및 날인 관리`}
         </p>
       </div>
     </aside>

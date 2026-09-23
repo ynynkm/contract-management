@@ -21,7 +21,7 @@ export const SignedQueue: React.FC<SignedQueueProps> = ({
   // Filter signed or approved contracts where team members can upload signed doc
   const accessibleContracts = contracts.filter((c) => {
     const isApprovedOrCompleted = c.status === 'REVIEW_COMPLETED' || c.status === 'SIGNED' || c.legalReview.status === 'APPROVED';
-    if (currentUser.role === 'team_member') {
+    if (currentUser.role === 'team_member' || currentUser.role === 'team_leader') {
       return isApprovedOrCompleted && c.team === currentUser.team;
     }
     return isApprovedOrCompleted;

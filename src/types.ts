@@ -1,12 +1,15 @@
 export type Team = '영업1팀' | '인사팀' | '재무팀' | '개발팀' | '법무담당';
 
-export type UserRoleType = 'team_member' | 'legal_manager' | 'legal_supervisor';
+export type UserRoleType = 'team_member' | 'team_leader' | 'legal_manager' | 'legal_supervisor';
 
 export interface User {
   id: string;
+  email: string;
   name: string;
   team: Team;
   role: UserRoleType;
+  position: string; // '팀원' | '팀장' | '법무관리자' | '법무담당'
+  avatar?: string;
 }
 
 export type ContractStatus = 

@@ -46,7 +46,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
 
   // Base accessible list by team permission
   let accessible = contracts;
-  if (currentUser.role === 'team_member') {
+  if (currentUser.role === 'team_member' || currentUser.role === 'team_leader') {
     accessible = contracts.filter((c) => c.team === currentUser.team);
   }
 

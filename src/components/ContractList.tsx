@@ -41,9 +41,9 @@ export const ContractList: React.FC<ContractListProps> = ({
   const [selectedCounterpartFilter, setSelectedCounterpartFilter] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<'latest' | 'endDate' | 'amount' | 'title'>('latest');
 
-  // Permission filtering: if team member, only show their team's contracts
+  // Permission filtering: if team member or leader, only show their team's contracts
   let filtered = contracts.filter((c) => {
-    if (currentUser.role === 'team_member') {
+    if (currentUser.role === 'team_member' || currentUser.role === 'team_leader') {
       return c.team === currentUser.team;
     }
     return true;

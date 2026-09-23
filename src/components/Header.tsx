@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from '../types';
-import { Shield, UserCheck, Bell, Search, CheckSquare } from 'lucide-react';
+import { Shield, UserCheck, Bell, Search, LogOut } from 'lucide-react';
 
 interface HeaderProps {
   currentUser: User;
@@ -9,6 +9,7 @@ interface HeaderProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
   pendingCount: number;
+  onLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,15 +19,19 @@ export const Header: React.FC<HeaderProps> = ({
   searchTerm,
   onSearchChange,
   pendingCount,
+  onLogout,
 }) => {
-  const getRoleLabel = (role: string) => {
+  const getRoleLabel = (role: string, position?: string) => {
+    if (position) return position;
     switch (role) {
       case 'legal_manager':
         return '법무관리자';
       case 'legal_supervisor':
         return '법무담당';
+      case 'team_leader':
+        return '팀장';
       default:
-        return '부서 담당자';
+        return '팀원';
     }
   };
 
@@ -57,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Role Switcher & User Profile */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           {/* Notification Badge */}
           <div className="relative">
             <button className="p-2 text-zinc-600 hover:text-zinc-900 rounded-md hover:bg-zinc-100 transition-colors relative">
@@ -85,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <div className="text-[10px] text-zinc-500">
-                {getRoleLabel(currentUser.role)}
+                {getRoleLabel(currentUser.role, currentUser.position)}
               </div>
             </div>
 
@@ -95,16 +100,27 @@ export const Header: React.FC<HeaderProps> = ({
                 const found = users.find((u) => u.id === e.target.value);
                 if (found) onSwitchUser(found);
               }}
-              className="ml-2 bg-transparent text-xs text-zinc-600 focus:outline-none cursor-pointer"
+              className="ml-2 bg-transparent text-xs text-zinc-600 focus:outline-none cursor-pointer border-l border-zinc-200 pl-2"
               title="권한 및 사용자 전환"
             >
               {users.map((u) => (
                 <option key={u.id} value={u.id}>
-                  {u.name} ({u.team} - {getRoleLabel(u.role)})
+                  {u.name} ({u.team} - {getRoleLabel(u.role, u.position)})
                 </option>
               ))}
             </select>
           </div>
+
+          {/* Logout Button */}
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="p-2 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-md transition-colors"
+              title="로그아웃"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </header>

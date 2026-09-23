@@ -16,7 +16,7 @@ export const ApprovedQueue: React.FC<ApprovedQueueProps> = ({
   // Filter approved contracts
   const approvedList = contracts.filter((c) => {
     const isApproved = c.status === 'REVIEW_COMPLETED' || c.status === 'SIGNED' || c.legalReview.status === 'APPROVED';
-    if (currentUser.role === 'team_member') {
+    if (currentUser.role === 'team_member' || currentUser.role === 'team_leader') {
       return isApproved && c.team === currentUser.team;
     }
     return isApproved;
@@ -31,7 +31,7 @@ export const ApprovedQueue: React.FC<ApprovedQueueProps> = ({
             <span>최종 승인 완료함</span>
           </h2>
           <p className="text-xs text-zinc-500 mt-0.5">
-            {currentUser.role === 'team_member' ? `${currentUser.team} 소속` : '전사'} 계약 중 법무 검토 및 법무담당 최종 승인이 완료된 계약서 목록입니다.
+            {currentUser.role === 'team_member' || currentUser.role === 'team_leader' ? `${currentUser.team} 소속` : '전사'} 계약 중 법무 검토 및 법무담당 최종 승인이 완료된 계약서 목록입니다.
           </p>
         </div>
         <div className="text-xs bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded font-medium">
