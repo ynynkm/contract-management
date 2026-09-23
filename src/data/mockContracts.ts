@@ -226,6 +226,6 @@ export const MOCK_USERS: User[] = [
   { id: 'usr-1', name: '김영업', team: '영업1팀', role: 'team_member' },
   { id: 'usr-2', name: '박인사', team: '인사팀', role: 'team_member' },
   { id: 'usr-3', name: '이재무', team: '재무팀', role: 'team_member' },
-  { id: 'usr-4', name: '최법무', team: '법무팀', role: 'legal_manager' },
-  { id: 'usr-5', name: '한법무담당', team: '법무팀', role: 'legal_supervisor' },
+  { id: 'usr-4', name: '최법무', team: '법무담당', role: 'legal_manager' },
+  { id: 'usr-5', name: '한법무담당', team: '법무담당', role: 'legal_supervisor' },
 ];

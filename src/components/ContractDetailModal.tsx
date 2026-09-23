@@ -64,7 +64,7 @@ export const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
       updatedAt: new Date().toISOString().split('T')[0],
     };
     onUpdateContract(updated);
-    alert('법무팀에 계약서 검토 요청이 접수되었습니다.');
+    alert('법무담당에게 계약서 검토 요청이 접수되었습니다.');
   };
 
   // 2. Legal Manager replies and requests Final Approval from Legal Supervisor
@@ -247,7 +247,7 @@ export const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
 
           {contract.legalReview.requestDetails && (
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-1">
-              <h4 className="text-xs font-semibold text-zinc-800 uppercase tracking-wider">법무팀 검토 요청사항</h4>
+              <h4 className="text-xs font-semibold text-zinc-800 uppercase tracking-wider">법무담당 검토 요청사항</h4>
               <p className="text-xs text-zinc-700 leading-relaxed">
                 {contract.legalReview.requestDetails}
               </p>
@@ -335,11 +335,11 @@ export const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
             {/* Action Form 1: Team requesting legal review */}
             {!isLegalManager && !isLegalSupervisor && isMyTeam && (!contract.legalReview.requestedAt || contract.legalReview.status === 'PENDING') && (
               <form onSubmit={handleRequestReview} className="space-y-3 pt-2">
-                <label className="block text-xs font-medium text-zinc-700">법무팀 검토 요청 메모</label>
+                <label className="block text-xs font-medium text-zinc-700">법무담당 검토 요청 메모</label>
                 <textarea
                   value={requestMemo}
                   onChange={(e) => setRequestMemo(e.target.value)}
-                  placeholder="법무팀에 검토를 요청할 특이사항이나 중점 검토 조항을 입력하세요..."
+                  placeholder="법무담당에게 검토를 요청할 특이사항이나 중점 검토 조항을 입력하세요..."
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-md p-2.5 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
                   rows={2}
                 />
@@ -347,7 +347,7 @@ export const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                   type="submit"
                   className="bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium px-4 py-2 rounded-md transition-colors"
                 >
-                  법무팀 검토 요청하기
+                  법무담당 검토 요청하기
                 </button>
               </form>
             )}

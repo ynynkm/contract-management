@@ -234,7 +234,7 @@ export const ContractFormModal: React.FC<ContractFormModalProps> = ({
                 <option value="인사팀">인사팀</option>
                 <option value="재무팀">재무팀</option>
                 <option value="개발팀">개발팀</option>
-                <option value="법무팀">법무팀</option>
+                <option value="법무담당">법무담당</option>
               </select>
             </div>
 
@@ -321,11 +321,11 @@ export const ContractFormModal: React.FC<ContractFormModalProps> = ({
 
             {/* Review Request Details (검토 요청사항) */}
             <div className="space-y-1 sm:col-span-2">
-              <label className="block text-xs font-medium text-zinc-700">법무팀 검토 요청사항</label>
+              <label className="block text-xs font-medium text-zinc-700">법무담당 검토 요청사항</label>
               <textarea
                 value={requestDetails}
                 onChange={(e) => setRequestDetails(e.target.value)}
-                placeholder="법무팀에서 특별히 검토하거나 수정했으면 하는 조항이나 리스크 요소를 기재하세요."
+                placeholder="법무담당에서 특별히 검토하거나 수정했으면 하는 조항이나 리스크 요소를 기재하세요."
                 className="w-full bg-zinc-50 border border-zinc-200 rounded-md p-3 text-xs text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900"
                 rows={2}
               />

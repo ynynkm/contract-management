@@ -152,7 +152,14 @@ export default function App() {
           )}
 
           {activeTab === 'categories' && (
-            <CategoryManager contracts={contracts} onSelectContract={setSelectedContract} />
+            <CategoryManager
+              contracts={contracts}
+              currentUser={currentUser}
+              onSelectContract={setSelectedContract}
+              onCompareRenewal={setCompareContract}
+              searchTerm={searchTerm}
+              onUpdateContract={handleUpdateContract}
+            />
           )}
         </main>
       </div>

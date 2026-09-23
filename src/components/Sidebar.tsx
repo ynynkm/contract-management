@@ -81,11 +81,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className="flex items-center gap-1">
             {currentUser.role === 'team_member' && approvedCount > 0 && (
-              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded" title="최종 승인 완료 건수">
-                승인 {approvedCount}
+              <span className="text-xs bg-emerald-100 text-emerald-800 font-medium px-2 py-0.5 rounded-full">
+                {approvedCount}
               </span>
             )}
-            {pendingReviewCount > 0 && (
+            {(currentUser.role === 'legal_manager' || currentUser.role === 'legal_supervisor') && pendingReviewCount > 0 && (
               <span className="text-xs bg-amber-100 text-amber-800 font-medium px-2 py-0.5 rounded-full">
                 {pendingReviewCount}
               </span>
@@ -127,10 +127,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <div className="flex items-center space-x-2.5">
               <CheckSquare className="w-4 h-4 text-zinc-500" />
-              <span>법무담당 최종승인</span>
+              <span>승인 요청함</span>
             </div>
             {supervisorApprovalCount > 0 && (
-              <span className="text-xs bg-emerald-100 text-emerald-800 font-medium px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-blue-100 text-blue-800 font-medium px-2 py-0.5 rounded-full">
                 {supervisorApprovalCount}
               </span>
             )}

@@ -1,4 +1,4 @@
-export type Team = '영업1팀' | '인사팀' | '재무팀' | '개발팀' | '법무팀';
+export type Team = '영업1팀' | '인사팀' | '재무팀' | '개발팀' | '법무담당';
 
 export type UserRoleType = 'team_member' | 'legal_manager' | 'legal_supervisor';
 
